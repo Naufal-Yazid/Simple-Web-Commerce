@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imperia Culverin | Digital Collection</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Fraunces untuk Heading, Inter untuk Body -->
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --font-heading: 'Fraunces', serif;
+            --font-body: 'Inter', sans-serif;
+            --ice-blue: #92DFF3;
+            --ice-blue-dark: #00B4D8;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: #FFFFFF;
+            color: #000000;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        /* Mengatur heading menjadi tipis secara global */
+        h1, h2, h3, h4, .font-serif {
+            font-family: var(--font-heading);
+            font-weight: 400; 
+        }
+
+        .bg-ice-blue { background-color: var(--ice-blue); }
+        .text-ice-blue { color: var(--ice-blue-dark); }
+        
+        .btn-square {
+            border-radius: 0;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            font-size: 0.75rem;
+        }
+
+        .sticky-nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background-color: #000000;
+            color: #FFFFFF;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .nav-link {
+            position: relative;
+            transition: opacity 0.3s ease;
+            opacity: 0.7;
+        }
+        .nav-link:hover {
+            opacity: 1;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--ice-blue);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .hero-gradient {
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6));
+        }
+
+        .hidden-section {
+            display: none !important;
+        }
+
+        /* Hover Kartu Produk */
+        .product-card img {
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .product-card:hover img {
+            transform: scale(1.08);
+        }
+
+        /* Gaya Filter Aktif */
+        .active-filter-box {
+            background-color: #000000;
+            color: #FFFFFF !important;
+            opacity: 1 !important;
+        }
+
+        /* FAQ Accordion Styling */
+        .faq-item {
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .faq-question {
+            cursor: pointer;
+            padding: 24px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease;
+            color: #666;
+            line-height: 1.6;
+        }
+        .faq-item.active .faq-answer {
+            max-height: 300px;
+            padding-bottom: 24px;
+        }
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+        .faq-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: #000; }
+    </style>
+</head>
+<body>
+
+    <!-- Navigasi Utama -->
+    <nav class="sticky-nav py-4 md:py-6 px-6 md:px-12 flex justify-between items-center">
+        <div class="text-xl md:text-2xl font-serif font-normal tracking-tight cursor-pointer" onclick="navigateTo('home')">
+            IMPERIA <span class="text-white">CULVERIN</span>
+        </div>
+        
+        <div class="hidden lg:flex absolute left-1/2 -translate-x-1/2 space-x-10 text-[11px] font-medium uppercase tracking-[0.2em]">
+            <a href="javascript:void(0)" onclick="navigateTo('home')" class="nav-link">Home</a>
+            <a href="javascript:void(0)" onclick="navigateTo('catalog')" class="nav-link">Collection</a>
+            <a href="javascript:void(0)" onclick="navigateTo('about')" class="nav-link">About</a>
+            <a href="javascript:void(0)" onclick="navigateTo('contact')" class="nav-link">Contact</a>
+        </div>
+        
+        <div class="hidden lg:block">
+            <button onclick="navigateTo('catalog')" class="btn-square bg-white text-black px-6 py-2 hover:bg-ice-blue transition">Shop Now</button>
+        </div>
+
+        <div class="lg:hidden text-white">
+            <button id="mobile-menu-btn" class="p-2"><i data-lucide="menu"></i></button>
+        </div>
+    </nav>
+
+    <!-- Menu Mobile Overlay -->
+    <div id="mobile-menu" class="fixed inset-0 bg-black z-[100] flex flex-col items-center justify-center space-y-8 text-white hidden transform transition-all duration-300">
+        <button class="absolute top-6 right-6 p-4" id="close-menu-btn"><i data-lucide="x" class="w-8 h-8"></i></button>
+        <a href="javascript:void(0)" onclick="navigateTo('home')" class="text-4xl font-serif hover:text-ice-blue transition">Home</a>
+        <a href="javascript:void(0)" onclick="navigateTo('catalog')" class="text-4xl font-serif hover:text-ice-blue transition">Collection</a>
+        <a href="javascript:void(0)" onclick="navigateTo('about')" class="text-4xl font-serif hover:text-ice-blue transition">About</a>
+        <a href="javascript:void(0)" onclick="navigateTo('contact')" class="text-4xl font-serif hover:text-ice-blue transition">Contact</a>
+    </div>
+
+    <main>
+        
+        <!-- HALAMAN HOME -->
+        <section id="home" class="content-section">
+            <!-- Hero Section -->
+            <div class="relative h-[85vh] md:h-[90vh] bg-black flex items-center justify-center overflow-hidden">
+                <div class="absolute inset-0">
+                    <img src="https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?q=80&w=2070" alt="Latar Belakang Hero" class="w-full h-full object-cover opacity-50">
+                    <div class="absolute inset-0 hero-gradient"></div>
+                </div>
+                <div class="relative z-10 text-center px-6 max-w-4xl">
+                    <h1 class="text-white text-4xl md:text-7xl font-normal leading-[1.15] tracking-tight mb-8">
+                        Refined Everyday
+                    </h1>
+                    <p class="text-gray-300 text-sm md:text-lg mb-12 max-w-2xl mx-auto font-light leading-relaxed">Kami fokus menciptakan pakaian esensial yang tetap relevan, fungsional, dan halus di setiap musim.</p>
+                    <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
+                        <button onclick="navigateTo('catalog')" class="btn-square w-full sm:w-auto bg-white text-black px-10 py-4 hover:bg-ice-blue transition duration-300">Browse collection</button>
+                        <button onclick="navigateTo('about')" class="btn-square w-full sm:w-auto bg-transparent text-white border border-white/30 px-10 py-4 hover:bg-white hover:text-black transition duration-300">Our Story</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preview About Us -->
+            <div class="py-20 md:py-32 px-6 md:px-12 bg-white overflow-hidden">
+                <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                    <div class="relative order-2 lg:order-1">
+                        <div class="aspect-[4/5] bg-gray-100 relative z-10">
+                            <img src="https://images.unsplash.com/photo-1534030347209-467a5b0ad3e6?q=80&w=1080&h=1350" alt="Brand Essence" class="w-full h-full object-cover">
+                        </div>
+                        <div class="absolute -bottom-6 -right-6 w-full h-full border border-ice-blue -z-0 hidden lg:block"></div>
+                    </div>
+                    <div class="space-y-8 order-1 lg:order-2">
+                        <div class="space-y-2 text-center lg:text-left">
+                            <p class="text-gray-400 font-bold uppercase tracking-[0.4em] text-[10px]">The Essence of Imperia</p>
+                            <h2 class="text-3xl md:text-5xl font-serif font-normal tracking-tighter">Beyond the threads</h2>
+                        </div>
+                        <p class="text-gray-600 leading-relaxed font-light text-base md:text-lg text-center lg:text-left">Imperia Culverin bukan sekadar tentang pakaian; ini adalah manifesto tentang bagaimana kita merangkul waktu. Kami menggabungkan konstruksi teknis dengan siluet klasik untuk menciptakan pakaian yang tahan lama secara material maupun gaya.</p>
+                        <div class="flex justify-center lg:justify-start">
+                            <button onclick="navigateTo('about')" class="btn-square border border-black px-12 py-4 hover:bg-black hover:text-white transition group flex items-center">
+                                Full Story <i data-lucide="arrow-right" class="ml-3 w-4 h-4 transition group-hover:translate-x-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Featured Collection (3 items) -->
+            <div class="pb-24 pt-10 px-6 md:px-12 bg-white">
+                <div class="max-w-7xl mx-auto">
+                    <div class="flex flex-col md:flex-row justify-between items-center md:items-end mb-16 space-y-6 md:space-y-0">
+                        <div class="text-center md:text-left">
+                            <p class="text-gray-400 text-[10px] font-bold uppercase tracking-[0.4em] mb-3">Curated Essentials</p>
+                            <h2 class="text-3xl md:text-4xl font-serif font-normal">Featured Collection</h2>
+                        </div>
+                        <a href="javascript:void(0)" onclick="navigateTo('catalog')" class="text-[11px] font-bold uppercase tracking-[0.2em] border-b border-black pb-1 hover:text-ice-blue-dark transition-all">See All</a>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10" id="new-arrivals-grid">
+                        <!-- Produk diinjeksi via JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Brand Values -->
+            <div class="py-20 md:py-32 px-6 md:px-12 bg-white border-t border-gray-50">
+                <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-16">
+                    <div class="space-y-6 text-center md:text-left">
+                        <div class="w-14 h-14 bg-black rounded-full flex items-center justify-center text-white mx-auto md:mx-0"><i data-lucide="shield-check" class="w-6 h-6"></i></div>
+                        <h3 class="text-2xl font-serif font-normal">Premium Quality</h3>
+                        <p class="text-gray-500 font-light text-sm leading-relaxed">Kami hanya menggunakan material premium yang telah melalui uji ketahanan tinggi lintas generasi.</p>
+                    </div>
+                    <div class="space-y-6 text-center md:text-left">
+                        <div class="w-14 h-14 bg-black rounded-full flex items-center justify-center text-white mx-auto md:mx-0"><i data-lucide="zap" class="w-6 h-6"></i></div>
+                        <h3 class="text-2xl font-serif font-normal">Technical Innovation</h3>
+                        <p class="text-gray-500 font-light text-sm leading-relaxed">Fungsionalitas yang dipadukan dengan estetika minimalis modern di setiap jahitan.</p>
+                    </div>
+                    <div class="space-y-6 text-center md:text-left">
+                        <div class="w-14 h-14 bg-black rounded-full flex items-center justify-center text-white mx-auto md:mx-0"><i data-lucide="earth" class="w-6 h-6"></i></div>
+                        <h3 class="text-2xl font-serif font-normal">Sustainable Vision</h3>
+                        <p class="text-gray-500 font-light text-sm leading-relaxed">Berfokus pada produksi yang bertanggung jawab untuk mengurangi dampak konsumsi berlebih.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Banner CTA -->
+            <div class="relative py-24 md:py-48 px-6 md:px-12 bg-black text-center overflow-hidden">
+                <div class="absolute inset-0 opacity-40">
+                    <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2070" alt="Banner Background" class="w-full h-full object-cover">
+                </div>
+                <div class="relative z-10 max-w-4xl mx-auto space-y-10">
+                    <div class="space-y-4">
+                        <p class="text-ice-blue font-bold uppercase tracking-[0.4em] text-[10px]">The Future of Style</p>
+                        <h2 class="text-white text-3xl md:text-6xl font-serif font-normal tracking-tight leading-tight">Elevate your daily<br class="hidden md:block">rotation with Imperia.</h2>
+                    </div>
+                    <div class="flex justify-center pt-4">
+                        <button onclick="navigateTo('catalog')" class="btn-square bg-ice-blue text-black px-12 md:px-16 py-4 md:py-5 font-bold hover:bg-white transition duration-300 shadow-xl">
+                            Shop the collection
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEKSI KOLEKSI (Collection) -->
+        <section id="catalog" class="content-section hidden-section pt-24 md:pt-32 pb-24 px-6 md:px-12 max-w-[1440px] mx-auto">
+            <div class="mb-12 text-center md:text-left">
+                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-[0.3em] mb-4" id="collection-count">COLLECTION — 8 PIECES</p>
+                <h1 class="text-5xl md:text-7xl font-serif font-normal mb-6 tracking-tighter leading-none">Collection</h1>
+                <p class="text-gray-500 max-w-2xl font-light text-sm md:text-base leading-relaxed mx-auto md:mx-0">
+                    Kurasi esensial yang matang — setiap bagian dirancang untuk bertahan lintas musim.
+                </p>
+            </div>
+
+            <div class="border-y border-gray-100 py-8 mb-16 space-y-10 lg:space-y-0 flex flex-col lg:flex-row justify-between items-center">
+                <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-8">
+                    <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gray-400">Category</span>
+                    <div class="flex flex-wrap justify-center gap-2">
+                        <button onclick="filterProducts('All')" class="cat-filter text-[10px] font-bold uppercase px-4 py-2 transition-all opacity-50 active-filter-box" id="filter-All">All</button>
+                        <button onclick="filterProducts('Tops')" class="cat-filter text-[10px] font-bold uppercase px-4 py-2 transition-all opacity-50 hover:opacity-100" id="filter-Tops">Tops</button>
+                        <button onclick="filterProducts('Outerwear')" class="cat-filter text-[10px] font-bold uppercase px-4 py-2 transition-all opacity-50 hover:opacity-100" id="filter-Outerwear">Outerwear</button>
+                        <button onclick="filterProducts('Bottoms')" class="cat-filter text-[10px] font-bold uppercase px-4 py-2 transition-all opacity-50 hover:opacity-100" id="filter-Bottoms">Bottoms</button>
+                    </div>
+                </div>
+                <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-8">
+                    <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gray-400">Size</span>
+                    <div class="flex gap-2">
+                        <button class="w-10 h-10 flex items-center justify-center text-[10px] font-bold border border-gray-100 hover:border-black transition active-filter-box">ALL</button>
+                        <button class="w-10 h-10 flex items-center justify-center text-[10px] font-bold border border-gray-100 hover:border-black transition text-gray-400">S</button>
+                        <button class="w-10 h-10 flex items-center justify-center text-[10px] font-bold border border-gray-100 hover:border-black transition text-gray-400">M</button>
+                        <button class="w-10 h-10 flex items-center justify-center text-[10px] font-bold border border-gray-100 hover:border-black transition text-gray-400">L</button>
+                    </div>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16" id="catalog-grid"></div>
+        </section>
+
+        <!-- PRODUCT DETAIL SECTION -->
+        <section id="product-detail" class="content-section hidden-section pt-24 md:pt-32 pb-24 px-6 md:px-12">
+            <button onclick="navigateTo('catalog')" class="flex items-center text-[10px] font-bold mb-12 uppercase tracking-[0.2em] group">
+                <i data-lucide="arrow-left" class="mr-2 w-4 transition group-hover:-translate-x-1"></i> Back to Collection
+            </button>
+            <div id="detail-content" class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 max-w-7xl mx-auto"></div>
+        </section>
+
+        <!-- ABOUT SECTION -->
+        <section id="about" class="content-section hidden-section">
+            <!-- About Hero -->
+            <div class="relative h-[50vh] md:h-[80vh] bg-black flex items-center overflow-hidden text-center">
+                <div class="absolute inset-0">
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069" alt="About Hero" class="w-full h-full object-cover opacity-60">
+                    <div class="absolute inset-0 bg-black/30"></div>
+                </div>
+                <div class="relative z-10 px-6 md:px-24 text-white w-full">
+                    <h1 class="text-5xl md:text-8xl font-serif font-normal tracking-tighter leading-tight">About</h1>
+                </div>
+            </div>
+
+            <!-- Philosophy Section (Revisi: Title jadi "Imperia Culverin") -->
+            <div class="py-20 md:py-32 px-6 md:px-12 bg-white text-center">
+                <div class="max-w-3xl mx-auto space-y-10">
+                    <div class="space-y-4">
+                        <p class="text-[10px] font-bold uppercase tracking-[0.5em] text-gray-400">Our Philosophy</p>
+                        <!-- Judul Diganti -->
+                        <h2 class="text-3xl md:text-5xl font-serif font-normal">Imperia Culverin</h2>
+                    </div>
+                    <div class="space-y-6 text-gray-600 font-light leading-relaxed text-base md:text-lg text-center">
+                        <p>
+                            Imperia Culverin adalah fashion brand modern lifestyle yang menghadirkan refined silhouettes dan essential fashion pieces yang elegan dengan harga yang tetap accessible. Brand ini berfokus pada desain yang subtle, controlled, dan intentional untuk membantu individu tampil lebih percaya diri dalam kehidupan sehari-hari. 
+                        </p>
+                        <p>
+                            Imperia Culverin menjembatani gap antara kualitas premium dan harga yang terjangkau dengan menghadirkan produk yang terasa refined tanpa terlihat berlebihan.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mission & Vision -->
+            <div class="py-20 md:py-24 px-6 md:px-12 bg-[#FBFBFB]">
+                <div class="max-w-7xl mx-auto">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+                        <div class="space-y-12">
+                            <div class="relative aspect-[4/5] overflow-hidden grayscale">
+                                <img src="https://images.unsplash.com/photo-1534030347209-467a5b0ad3e6?q=80&w=1080&h=1350" alt="Vision Portrait" class="w-full h-full object-cover">
+                            </div>
+                            <div class="space-y-6">
+                                <h3 class="text-3xl font-serif font-normal italic border-b border-gray-100 pb-2">Our Vision</h3>
+                                <p class="text-gray-500 font-light leading-relaxed">
+                                    Menjadi modern lifestyle fashion brand yang menghadirkan elegance dan refinement dalam keseharian dengan kualitas tinggi dan harga yang tetap accessible.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-12 lg:pt-32">
+                            <div class="space-y-6">
+                                <h3 class="text-3xl font-serif font-normal italic border-b border-gray-100 pb-2">Our Mission</h3>
+                                <ul class="space-y-6 text-gray-500 font-light leading-relaxed list-none">
+                                    <li class="flex items-start">
+                                        <span class="w-1.5 h-1.5 bg-ice-blue mt-2 mr-4 flex-shrink-0"></span>
+                                        <span>Menghadirkan fashion essentials dengan refined silhouettes yang memudahkan pelanggan tampil percaya diri setiap hari.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="w-1.5 h-1.5 bg-ice-blue mt-2 mr-4 flex-shrink-0"></span>
+                                        <span>Menutup gap antara kualitas premium dan harga terjangkau melalui desain yang thoughtful dan material yang berkualitas.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="w-1.5 h-1.5 bg-ice-blue mt-2 mr-4 flex-shrink-0"></span>
+                                        <span>Membangun aspirational lifestyle brand yang tetap relevan dengan trend namun tetap timeless dan elegant.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="aspect-video lg:aspect-[4/3] overflow-hidden grayscale">
+                                <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?q=80&w=2070" alt="Landscape Aesthetic" class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ SECTION -->
+            <div class="bg-white py-20 md:py-32 px-6 md:px-12 border-t border-gray-50">
+                <div class="max-w-3xl mx-auto">
+                    <div class="text-center mb-16 space-y-4">
+                        <h2 class="text-3xl md:text-4xl font-serif font-normal uppercase tracking-widest">FAQ</h2>
+                        <p class="text-gray-400 text-sm font-light text-center">Segala hal yang perlu Anda ketahui tentang Imperia Culverin.</p>
+                    </div>
+
+                    <div class="space-y-4 border-t border-gray-100">
+                        <div class="faq-item" onclick="toggleFaq(this)">
+                            <div class="faq-question">
+                                <h4 class="text-sm font-medium uppercase tracking-widest">Bagaimana cara menentukan ukuran yang tepat?</h4>
+                                <i data-lucide="chevron-down" class="faq-icon w-4 h-4 text-gray-400"></i>
+                            </div>
+                            <div class="faq-answer text-sm font-light">
+                                Kami menyediakan panduan ukuran (Size Chart) mendalam di setiap halaman produk. Jika ragu, silakan hubungi specialist kami via WhatsApp.
+                            </div>
+                        </div>
+                        <div class="faq-item" onclick="toggleFaq(this)">
+                            <div class="faq-question">
+                                <h4 class="text-sm font-medium uppercase tracking-widest">Berapa lama waktu pengiriman pesanan?</h4>
+                                <i data-lucide="chevron-down" class="faq-icon w-4 h-4 text-gray-400"></i>
+                            </div>
+                            <div class="faq-answer text-sm font-light">
+                                Pesanan dikirimkan dari Jakarta. Estimasi 1-2 hari kerja untuk Jabodetabek dan 3-5 hari kerja untuk luar pulau.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT SECTION -->
+        <section id="contact" class="content-section hidden-section py-20 md:py-32 px-6 md:px-24 bg-white min-h-[90vh] flex items-center">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-32 w-full">
+                <!-- Info -->
+                <div class="space-y-12">
+                    <div class="space-y-6 text-center lg:text-left">
+                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-[0.4em]">Contact Us</p>
+                        <h1 class="text-4xl md:text-7xl font-serif font-normal leading-[1.1] tracking-tight">Reach out, we're ready</h1>
+                        <p class="text-gray-500 font-light text-base md:text-lg leading-relaxed max-w-md mx-auto lg:mx-0">
+                            Kami percaya komunikasi adalah kunci kepercayaan. Specialist kami siap melayani pertanyaan melalui pusat komunikasi resmi kami.
+                        </p>
+                    </div>
+
+                    <div class="space-y-10 pt-8 border-t border-gray-100">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-8">
+                            <div class="flex items-center space-x-5 group cursor-pointer" onclick="window.open('https://instagram.com/imperia.culverin')">
+                                <div class="w-12 h-12 border border-gray-100 flex items-center justify-center text-gray-400 group-hover:bg-black group-hover:text-white transition-all duration-300">
+                                    <i data-lucide="instagram" class="w-5 h-5"></i>
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-[10px] font-bold uppercase text-gray-300 tracking-widest">Instagram</span>
+                                    <span class="text-sm font-medium text-gray-700">@imperia.culverin</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-5 group cursor-pointer" onclick="window.open('https://wa.me/628123456789')">
+                                <div class="w-12 h-12 border border-gray-100 flex items-center justify-center text-gray-400 group-hover:bg-black group-hover:text-white transition-all duration-300">
+                                    <i data-lucide="phone" class="w-5 h-5"></i>
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-[10px] font-bold uppercase text-gray-300 tracking-widest">WhatsApp</span>
+                                    <span class="text-sm font-medium text-gray-700">+62 812 3456 789</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-5 group">
+                                <div class="w-12 h-12 border border-gray-100 flex items-center justify-center text-gray-400 group-hover:bg-black group-hover:text-white transition-all duration-300">
+                                    <i data-lucide="mail" class="w-5 h-5"></i>
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-[10px] font-bold uppercase text-gray-300 tracking-widest">Email</span>
+                                    <span class="text-sm font-medium text-gray-700">hello@imperia.id</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form -->
+                <div class="bg-[#FBFBFB] p-8 md:p-16 border border-gray-100 flex flex-col justify-center shadow-sm">
+                    <form class="space-y-10" onsubmit="event.preventDefault();">
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Full Name</label>
+                            <input type="text" placeholder="Masukkan nama lengkap Anda" class="w-full bg-transparent border-b border-gray-200 py-3 text-sm focus:border-black outline-none transition" required>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Email Address</label>
+                            <input type="email" placeholder="nama@domain.com" class="w-full bg-transparent border-b border-gray-200 py-3 text-sm focus:border-black outline-none transition" required>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Message</label>
+                            <textarea rows="4" placeholder="Apa yang ingin Anda sampaikan?" class="w-full bg-transparent border-b border-gray-200 py-3 text-sm focus:border-black outline-none transition resize-none" required></textarea>
+                        </div>
+                        <div class="pt-6">
+                            <button type="submit" class="btn-square w-full bg-black text-white py-5 hover:bg-ice-blue hover:text-black transition duration-500 shadow-md">
+                                Submit Inquiry
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-black text-white py-16 md:py-24 px-6 md:px-12 border-t border-white/5">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-20">
+            <div class="space-y-8 col-span-1 lg:col-span-2 text-center md:text-left">
+                <div class="text-2xl font-serif font-normal tracking-tighter">IMPERIA <span class="text-ice-blue">CULVERIN</span></div>
+                <p class="text-gray-500 font-light text-sm leading-relaxed max-w-xs mx-auto md:mx-0">
+                    Reimagining modern menswear through the lens of precision. Jakarta, Indonesia.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-[10px] font-bold uppercase tracking-[0.4em] mb-10 text-gray-500 text-center md:text-left">Navigation</h4>
+                <ul class="space-y-4 text-sm font-light text-center md:text-left">
+                    <li><a href="#" onclick="navigateTo('home')" class="hover:text-ice-blue transition">Home</a></li>
+                    <li><a href="#" onclick="navigateTo('catalog')" class="hover:text-ice-blue transition">Collection</a></li>
+                    <li><a href="#" onclick="navigateTo('about')" class="hover:text-ice-blue transition">About</a></li>
+                    <li><a href="#" onclick="navigateTo('contact')" class="hover:text-ice-blue transition">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-[10px] font-bold uppercase tracking-[0.4em] mb-10 text-gray-500 text-center md:text-left">Social</h4>
+                <div class="flex justify-center md:justify-start space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white transition"><i data-lucide="instagram"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition"><i data-lucide="twitter"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto mt-20 pt-10 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-[10px] text-gray-600 font-bold uppercase tracking-[0.2em] space-y-4 md:space-y-0 text-center md:text-left">
+            <span>&copy; 2024 Imperia Culverin</span>
+            <span>Est. Jakarta</span>
+        </div>
+    </footer>
+
+    <script>
+        const products = [
+            { id: 1, name: "Essential Oversized Black", category: "Tops", price: "Rp 249.000", img: "image_19dd5d.png", isFeatured: true, desc: "Potongan oversized yang sempurna, menggunakan Heavy Cotton premium untuk durabilitas maksimal.", size: ["S", "M", "L"] },
+            { id: 2, name: "Refined Everyday Tee", category: "Tops", price: "Rp 269.000", img: "image_19dd42.png", isFeatured: true, desc: "Desain minimalis dengan aksen grafis halus untuk tampilan yang bersih dan profesional.", size: ["M", "L"] },
+            { id: 3, name: "The World Is Yours Graphic", category: "Tops", price: "Rp 289.000", img: "image_19dd27.jpg", isFeatured: true, desc: "Pesan filosofis yang dicetak dengan teknik high-density di atas bahan katun terbaik.", size: ["S", "M", "L"] },
+            { id: 4, name: "Ivory Camp Shirt", category: "Tops", price: "Rp 489.000", img: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?q=80&w=1080&h=1080", isFeatured: false, desc: "Essential linen camp shirt.", size: ["S", "M", "L"] },
+            { id: 5, name: "Camel Tailored Suit", category: "Outerwear", price: "Rp 1.890.000", img: "https://images.unsplash.com/photo-1594932224010-75f2a77bd99a?q=80&w=1080&h=1080", isFeatured: false, desc: "Precision-cut suit.", size: ["M", "L"] }
+        ];
+
+        function navigateTo(sectionId) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.add('hidden-section');
+            });
+            const target = document.getElementById(sectionId);
+            if(target) target.classList.remove('hidden-section');
+            
+            window.scrollTo({top: 0, behavior: 'smooth'});
+            document.getElementById('mobile-menu').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        function renderProducts(targetGridId, list) {
+            const container = document.getElementById(targetGridId);
+            if(!container) return;
+            container.innerHTML = list.map(p => `
+                <div class="product-card group cursor-pointer" onclick="viewProductDetail(${p.id})">
+                    <div class="relative overflow-hidden aspect-[4/5] bg-gray-50 mb-6 shadow-sm">
+                        <img src="${p.img}" alt="${p.name}" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 w-[85%] transform translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition duration-500">
+                            <button class="btn-square w-full bg-white text-black py-4 text-[9px] shadow-xl">Quick View</button>
+                        </div>
+                    </div>
+                    <div class="space-y-1 text-center md:text-left">
+                        <h3 class="font-serif font-normal text-lg md:text-xl tracking-tight">${p.name}</h3>
+                        <div class="flex flex-col md:flex-row justify-between items-center md:items-start gap-1">
+                            <span class="text-[9px] text-gray-400 uppercase tracking-widest font-bold">${p.category}</span>
+                            <span class="text-sm font-medium text-gray-800">${p.price}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterProducts(category) {
+            document.querySelectorAll('.cat-filter').forEach(btn => {
+                btn.classList.remove('active-filter-box');
+                btn.classList.add('opacity-50');
+            });
+            const activeBtn = document.getElementById(`filter-${category}`);
+            if(activeBtn) {
+                activeBtn.classList.add('active-filter-box');
+                activeBtn.classList.remove('opacity-50');
+            }
+            const filtered = category === 'All' ? products : products.filter(p => p.category === category);
+            renderProducts('catalog-grid', filtered);
+        }
+
+        function viewProductDetail(id) {
+            const p = products.find(prod => prod.id === id);
+            navigateTo('product-detail');
+            const container = document.getElementById('detail-content');
+            container.innerHTML = `
+                <div class="aspect-[4/5] overflow-hidden bg-gray-50 shadow-sm">
+                    <img src="${p.img}" class="w-full h-full object-cover">
+                </div>
+                <div class="space-y-10 flex flex-col justify-center">
+                    <div class="space-y-4 text-center lg:text-left">
+                        <p class="text-ice-blue font-bold uppercase tracking-[0.4em] text-[10px]">${p.category}</p>
+                        <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif font-normal leading-tight tracking-tighter">${p.name}</h1>
+                        <p class="text-2xl md:text-3xl font-light text-gray-400">${p.price}</p>
+                    </div>
+                    <div class="space-y-4 pt-10 border-t border-gray-100 text-center lg:text-left">
+                        <h4 class="text-[10px] font-bold uppercase tracking-widest text-gray-500">Specifications</h4>
+                        <p class="text-gray-600 leading-relaxed font-light text-sm md:text-base">${p.desc}</p>
+                    </div>
+                    <div class="pt-6">
+                        <a href="https://wa.me/628123456789?text=Halo%20Admin%2C%20saya%20tertarik%20dengan%20produk%20${encodeURIComponent(p.name)}" target="_blank" class="btn-square w-full bg-black text-white py-5 block text-center hover:bg-ice-blue hover:text-black transition shadow-xl">
+                            Pesan via WhatsApp
+                        </a>
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        function toggleFaq(element) {
+            const isActive = element.classList.contains('active');
+            document.querySelectorAll('.faq-item').forEach(item => item.classList.remove('active'));
+            if (!isActive) element.classList.add('active');
+        }
+
+        window.onload = () => {
+            lucide.createIcons();
+            renderProducts('new-arrivals-grid', products.slice(0, 3));
+            renderProducts('catalog-grid', products);
+            document.getElementById('collection-count').innerText = `COLLECTION — ${products.length} PIECES`;
+
+            const mBtn = document.getElementById('mobile-menu-btn');
+            const cBtn = document.getElementById('close-menu-btn');
+            const menu = document.getElementById('mobile-menu');
+            
+            mBtn.addEventListener('click', () => {
+                menu.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            });
+            cBtn.addEventListener('click', () => {
+                menu.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            });
+        };
+    </script>
+</body>
+</html>
