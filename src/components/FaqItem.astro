@@ -1,0 +1,32 @@
+---
+interface Props {
+  question: string;
+  answer: string;
+}
+
+const { question, answer } = Astro.props;
+---
+
+<div class="faq-item" data-faq-item>
+  <div class="faq-question" data-faq-toggle>
+    <h4 class="text-sm font-medium uppercase tracking-widest">{question}</h4>
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="faq-icon w-4 h-4 text-gray-400">
+      <path d="m6 9 6 6 6-6"/>
+    </svg>
+  </div>
+  <div class="faq-answer text-sm font-light">
+    {answer}
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('[data-faq-toggle]').forEach((toggle) => {
+    toggle.addEventListener('click', () => {
+      const item = toggle.closest('[data-faq-item]');
+      if (!item) return;
+      const isActive = item.classList.contains('active');
+      document.querySelectorAll('[data-faq-item]').forEach((i) => i.classList.remove('active'));
+      if (!isActive) item.classList.add('active');
+    });
+  });
+</script>

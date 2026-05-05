@@ -1,0 +1,158 @@
+@import "tailwindcss";
+
+/* ===== Custom Theme ===== */
+@theme {
+  --font-heading: 'Fraunces', serif;
+  --font-body: 'Inter', sans-serif;
+
+  --color-ice-blue: #92DFF3;
+  --color-ice-blue-dark: #00B4D8;
+}
+
+/* ===== Base Styles ===== */
+body {
+  font-family: var(--font-body);
+  background-color: #FFFFFF;
+  color: #000000;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+/* Heading font globally */
+h1, h2, h3, h4, .font-serif {
+  font-family: var(--font-heading);
+  font-weight: 400;
+}
+
+/* ===== Utility Classes ===== */
+.bg-ice-blue { background-color: var(--color-ice-blue); }
+.text-ice-blue { color: var(--color-ice-blue-dark); }
+
+.btn-square {
+  border-radius: 0;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  font-size: 0.75rem;
+}
+
+/* ===== Navigation ===== */
+.sticky-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background-color: #000000;
+  color: #FFFFFF;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.nav-link {
+  position: relative;
+  transition: opacity 0.3s ease;
+  opacity: 0.7;
+}
+.nav-link:hover {
+  opacity: 1;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 1px;
+  bottom: -4px;
+  left: 0;
+  background-color: var(--color-ice-blue);
+  transition: width 0.3s ease;
+}
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* ===== Hero ===== */
+.hero-gradient {
+  background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6));
+}
+
+/* ===== Product Cards ===== */
+.product-card img {
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.product-card:hover img {
+  transform: scale(1.08);
+}
+
+/* ===== About Us Preview Photo - Monochrome + Hover Color/Zoom ===== */
+.about-preview-photo {
+  overflow: hidden;
+}
+.about-preview-photo img {
+  filter: grayscale(100%);
+  transition: filter 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.about-preview-photo:hover img {
+  filter: grayscale(0%);
+  transform: scale(1.08);
+}
+
+/* ===== Discount Price Styling ===== */
+.price-original {
+  text-decoration: line-through;
+  color: #9ca3af;
+  font-size: 0.75rem;
+}
+.price-discount {
+  color: #dc2626;
+  font-weight: 600;
+}
+.discount-badge {
+  background-color: #dc2626;
+  color: white;
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  letter-spacing: 0.05em;
+}
+
+/* ===== Filter Active State ===== */
+.active-filter-box {
+  background-color: #000000;
+  color: #FFFFFF !important;
+  opacity: 1 !important;
+}
+
+/* ===== FAQ Accordion ===== */
+.faq-item {
+  border-bottom: 1px solid #f0f0f0;
+}
+.faq-question {
+  cursor: pointer;
+  padding: 24px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease;
+  color: #666;
+  line-height: 1.6;
+}
+.faq-item.active .faq-answer {
+  max-height: 300px;
+  padding-bottom: 24px;
+}
+.faq-item.active .faq-icon {
+  transform: rotate(180deg);
+}
+.faq-icon {
+  transition: transform 0.3s ease;
+}
+
+/* ===== Scrollbar ===== */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-thumb { background: #000; }

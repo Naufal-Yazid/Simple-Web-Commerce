@@ -1,0 +1,92 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import { products, getCategories } from '../../data/products';
+
+const categories = getCategories();
+---
+
+<Layout title="Collection | Imperia Culverin" description="Browse the full Imperia Culverin collection — curated fashion essentials designed to last across seasons.">
+
+  <section id="collection-page" class="pt-24 md:pt-32 pb-24 px-6 md:px-12 max-w-[1440px] mx-auto">
+    <div class="mb-12 text-center md:text-left">
+      <p class="text-[10px] text-gray-400 font-bold uppercase tracking-[0.3em] mb-4" id="collection-count">
+        COLLECTION — {products.length} PIECES
+      </p>
+      <h1 class="text-5xl md:text-7xl font-serif font-normal mb-6 tracking-tighter leading-none">Collection</h1>
+      <p class="text-gray-500 max-w-2xl font-light text-sm md:text-base leading-relaxed mx-auto md:mx-0">
+        A mature curation of essentials — every piece designed to endure across seasons.
+      </p>
+    </div>
+
+    <!-- Filters -->
+    <div class="border-y border-gray-100 py-8 mb-16 space-y-10 lg:space-y-0 flex flex-col lg:flex-row justify-between items-center">
+      <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-8">
+        <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gray-400">Category</span>
+        <div class="flex flex-wrap justify-center gap-2" id="filter-buttons">
+          {categories.map((cat) => (
+            <button
+              data-category={cat}
+              class:list={[
+                "cat-filter text-[10px] font-bold uppercase px-4 py-2 transition-all",
+                cat === "All" ? "active-filter-box" : "opacity-50 hover:opacity-100"
+              ]}
+              id={`filter-${cat}`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-8">
+        <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-gray-400">Size</span>
+        <div class="flex gap-2">
+          <button class="w-10 h-10 flex items-center justify-center text-[10px] font-bold border border-gray-100 hover:border-black transition active-filter-box">ALL</button>
+          <button class="w-10 h-10 flex items-center justify-center text-[10px] font-bold border border-gray-100 hover:border-black transition text-gray-400">S</button>
+          <button class="w-10 h-10 flex items-center justify-center text-[10px] font-bold border border-gray-100 hover:border-black transition text-gray-400">M</button>
+          <button class="w-10 h-10 flex items-center justify-center text-[10px] font-bold border border-gray-100 hover:border-black transition text-gray-400">L</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16" id="catalog-grid">
+      {products.map((product) => (
+        <div data-category={product.category} class="product-item">
+          <ProductCard product={product} />
+        </div>
+      ))}
+    </div>
+  </section>
+
+</Layout>
+
+<script>
+  // Client-side category filtering
+  const filterBtns = document.querySelectorAll('.cat-filter');
+  const productItems = document.querySelectorAll('.product-item');
+
+  filterBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const category = btn.getAttribute('data-category');
+
+      // Update active filter styles
+      filterBtns.forEach((b) => {
+        b.classList.remove('active-filter-box');
+        b.classList.add('opacity-50');
+      });
+      btn.classList.add('active-filter-box');
+      btn.classList.remove('opacity-50');
+
+      // Filter products
+      productItems.forEach((item) => {
+        const el = item as HTMLElement;
+        if (category === 'All' || el.dataset.category === category) {
+          el.style.display = '';
+        } else {
+          el.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>

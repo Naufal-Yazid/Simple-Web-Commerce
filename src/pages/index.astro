@@ -1,0 +1,98 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProductCard from '../components/ProductCard.astro';
+import BrandValues from '../components/BrandValues.astro';
+import { getFeaturedProducts } from '../data/products';
+
+const featured = getFeaturedProducts();
+---
+
+<Layout title="Imperia Culverin | Digital Collection" description="Imperia Culverin — Refined everyday fashion essentials with premium quality and timeless design.">
+
+  <!-- Hero Section -->
+  <section id="hero">
+    <div class="relative h-[85vh] md:h-[90vh] bg-black flex items-center justify-center overflow-hidden">
+      <div class="absolute inset-0">
+        <img src="https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?q=80&w=2070" alt="Hero Background" class="w-full h-full object-cover opacity-50" />
+        <div class="absolute inset-0 hero-gradient"></div>
+      </div>
+      <div class="relative z-10 text-center px-6 max-w-4xl">
+        <h1 class="text-white text-4xl md:text-7xl font-normal leading-[1.15] tracking-tight mb-8">
+          Refined Everyday
+        </h1>
+        <p class="text-gray-300 text-sm md:text-lg mb-12 max-w-2xl mx-auto font-light leading-relaxed">
+          Bridging premium quality and everyday accessibility through refined, intentional design.
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
+          <a href="/collection" class="btn-square w-full sm:w-auto bg-white text-black px-10 py-4 hover:bg-ice-blue transition duration-300 inline-block text-center" id="hero-cta-browse">Browse collection</a>
+          <a href="/about" class="btn-square w-full sm:w-auto bg-transparent text-white border border-white/30 px-10 py-4 hover:bg-white hover:text-black transition duration-300 inline-block text-center" id="hero-cta-story">Our Story</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Preview About Us -->
+  <section id="about-preview" class="py-20 md:py-32 px-6 md:px-12 bg-white overflow-hidden">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+      <div class="relative order-2 lg:order-1">
+        <div class="aspect-[4/5] bg-gray-100 relative z-10 about-preview-photo">
+          <img src="/about-preview.png" alt="Brand Essence" class="w-full h-full object-cover" loading="lazy" />
+        </div>
+        <div class="absolute -bottom-6 -right-6 w-full h-full border border-ice-blue -z-0 hidden lg:block"></div>
+      </div>
+      <div class="space-y-8 order-1 lg:order-2">
+        <div class="space-y-2 text-center lg:text-left">
+          <p class="text-gray-400 font-bold uppercase tracking-[0.4em] text-[10px]">The Essence of Imperia</p>
+          <h2 class="text-3xl md:text-5xl font-serif font-normal tracking-tighter">Beyond the threads</h2>
+        </div>
+        <p class="text-gray-600 leading-relaxed font-light text-base md:text-lg text-center lg:text-left">Imperia Culverin is a modern lifestyle fashion brand that offers refined silhouettes and elegant essential fashion pieces at accessible prices. The brand focuses on subtle, controlled, and intentional designs to help individuals feel more confident in their daily lives.</p>
+        <div class="flex justify-center lg:justify-start">
+          <a href="/about" class="btn-square border border-black px-12 py-4 hover:bg-black hover:text-white transition group flex items-center" id="about-preview-link">
+            Full Story
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-3 w-4 h-4 transition group-hover:translate-x-2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Collection -->
+  <section id="featured-collection" class="pb-24 pt-10 px-6 md:px-12 bg-white">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex flex-col md:flex-row justify-between items-center md:items-end mb-16 space-y-6 md:space-y-0">
+        <div class="text-center md:text-left">
+          <p class="text-gray-400 text-[10px] font-bold uppercase tracking-[0.4em] mb-3">Curated Essentials</p>
+          <h2 class="text-3xl md:text-4xl font-serif font-normal">Featured Collection</h2>
+        </div>
+        <a href="/collection" class="text-[11px] font-bold uppercase tracking-[0.2em] border-b border-black pb-1 hover:text-ice-blue-dark transition-all" id="featured-see-all">See All</a>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+        {featured.map((product) => (
+          <ProductCard product={product} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Brand Values -->
+  <BrandValues />
+
+  <!-- Banner CTA -->
+  <section id="banner-cta" class="relative py-24 md:py-48 px-6 md:px-12 bg-black text-center overflow-hidden">
+    <div class="absolute inset-0 opacity-40">
+      <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2070" alt="Banner Background" class="w-full h-full object-cover" loading="lazy" />
+    </div>
+    <div class="relative z-10 max-w-4xl mx-auto space-y-10">
+      <div class="space-y-4">
+        <p class="text-ice-blue font-bold uppercase tracking-[0.4em] text-[10px]">The Future of Style</p>
+        <h2 class="text-white text-3xl md:text-6xl font-serif font-normal tracking-tight leading-tight">Elevate your daily<br class="hidden md:block" />rotation with Imperia.</h2>
+      </div>
+      <div class="flex justify-center pt-4">
+        <a href="/collection" class="btn-square bg-ice-blue text-black px-12 md:px-16 py-4 md:py-5 font-bold hover:bg-white transition duration-300 shadow-xl inline-block" id="banner-cta-shop">
+          Shop the collection
+        </a>
+      </div>
+    </div>
+  </section>
+
+</Layout>

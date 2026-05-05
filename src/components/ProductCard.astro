@@ -1,0 +1,36 @@
+---
+import type { Product } from "../data/products";
+
+interface Props {
+  product: Product;
+}
+
+const { product } = Astro.props;
+---
+
+<div class="product-card group cursor-pointer">
+  <a href={`/collection/${product.id}`} class="block">
+    <div class="relative overflow-hidden aspect-[4/5] bg-gray-50 mb-6 shadow-sm">
+      <img src={product.img} alt={product.name} class="w-full h-full object-cover" loading="lazy" />
+      <div class="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition duration-500"></div>
+      <div class="absolute bottom-6 left-1/2 -translate-x-1/2 w-[85%] transform translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition duration-500">
+        <span class="btn-square w-full bg-white text-black py-4 text-[9px] shadow-xl block text-center">Shop Now</span>
+      </div>
+    </div>
+    <div class="space-y-1 text-center md:text-left">
+      <h3 class="font-serif font-normal text-lg md:text-xl tracking-tight">{product.name}</h3>
+      <div class="flex flex-col md:flex-row justify-between items-center md:items-start gap-1">
+        <span class="text-[9px] text-gray-400 uppercase tracking-widest font-bold">{product.category}</span>
+        {product.discount ? (
+          <div class="flex items-center gap-2">
+            <span class="discount-badge">{product.discount}</span>
+            <span class="price-original">{product.originalPrice}</span>
+            <span class="text-sm font-medium price-discount">{product.price}</span>
+          </div>
+        ) : (
+          <span class="text-sm font-medium text-gray-800">{product.price}</span>
+        )}
+      </div>
+    </div>
+  </a>
+</div>

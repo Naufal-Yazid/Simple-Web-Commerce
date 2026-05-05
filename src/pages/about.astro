@@ -1,0 +1,87 @@
+---
+import Layout from '../layouts/Layout.astro';
+import FaqItem from '../components/FaqItem.astro';
+---
+
+<Layout title="About | Imperia Culverin" description="Discover the philosophy, mission, and vision of Imperia Culverin.">
+
+  <section id="about-hero">
+    <div class="relative h-[50vh] md:h-[80vh] bg-black flex items-center overflow-hidden text-center">
+      <div class="absolute inset-0">
+        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069" alt="About Hero" class="w-full h-full object-cover opacity-60" loading="lazy" />
+        <div class="absolute inset-0 bg-black/30"></div>
+      </div>
+      <div class="relative z-10 px-6 md:px-24 text-white w-full">
+        <h1 class="text-5xl md:text-8xl font-serif font-normal tracking-tighter leading-tight">About</h1>
+      </div>
+    </div>
+  </section>
+
+  <section id="philosophy" class="py-20 md:py-32 px-6 md:px-12 bg-white text-center">
+    <div class="max-w-3xl mx-auto space-y-10">
+      <div class="space-y-4">
+        <p class="text-[10px] font-bold uppercase tracking-[0.5em] text-gray-400">Our Philosophy</p>
+        <h2 class="text-3xl md:text-5xl font-serif font-normal">Imperia Culverin</h2>
+      </div>
+      <div class="space-y-6 text-gray-600 font-light leading-relaxed text-base md:text-lg text-center">
+        <p>Imperia Culverin is a modern lifestyle fashion brand that offers refined silhouettes and elegant essential fashion pieces at accessible prices. The brand focuses on subtle, controlled, and intentional designs to help individuals feel more confident in their daily lives.</p>
+        <p>Imperia Culverin bridges the gap between premium quality and affordability by offering products that feel refined without looking ostentatious.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="mission-vision" class="py-20 md:py-24 px-6 md:px-12 bg-[#FBFBFB]">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+        <div class="space-y-12">
+          <div class="relative aspect-[4/5] overflow-hidden grayscale">
+            <img src="/vision-photo.png" alt="Vision Portrait" class="w-full h-full object-cover" loading="lazy" />
+          </div>
+          <div class="space-y-6">
+            <h3 class="text-3xl font-serif font-normal italic border-b border-gray-100 pb-2">Our Vision</h3>
+            <p class="text-gray-500 font-light leading-relaxed">To be a modern lifestyle fashion brand that brings elegance and refinement to everyday life through high-quality products at prices that remain affordable.</p>
+          </div>
+        </div>
+        <div class="space-y-12 lg:pt-32">
+          <div class="space-y-6">
+            <h3 class="text-3xl font-serif font-normal italic border-b border-gray-100 pb-2">Our Mission</h3>
+            <ul class="space-y-6 text-gray-500 font-light leading-relaxed list-none">
+              <li class="flex items-start">
+                <span class="w-1.5 h-1.5 bg-ice-blue mt-2 mr-4 flex-shrink-0"></span>
+                <span>Featuring fashion essentials with refined silhouettes that help customers look confident every day.</span>
+              </li>
+              <li class="flex items-start">
+                <span class="w-1.5 h-1.5 bg-ice-blue mt-2 mr-4 flex-shrink-0"></span>
+                <span>Bridging the gap between premium quality and affordability through thoughtful design and high-quality materials.</span>
+              </li>
+              <li class="flex items-start">
+                <span class="w-1.5 h-1.5 bg-ice-blue mt-2 mr-4 flex-shrink-0"></span>
+                <span>Building an aspirational lifestyle brand that stays relevant to trends while remaining timeless and elegant.</span>
+              </li>
+            </ul>
+          </div>
+          <div class="aspect-video lg:aspect-[4/3] overflow-hidden grayscale">
+            <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?q=80&w=2070" alt="Landscape Aesthetic" class="w-full h-full object-cover" loading="lazy" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="bg-white py-20 md:py-32 px-6 md:px-12 border-t border-gray-50">
+    <div class="max-w-3xl mx-auto">
+      <div class="text-center mb-16 space-y-4">
+        <h2 class="text-3xl md:text-4xl font-serif font-normal uppercase tracking-widest">FAQ</h2>
+        <p class="text-gray-400 text-sm font-light text-center">Everything you need to know about Imperia Culverin.</p>
+      </div>
+      <div class="space-y-4 border-t border-gray-100">
+        <FaqItem question="What makes Imperia Culverin products different?" answer="Each product is designed with a refined simplicity emphasizing clean lines, subtle details, and high-quality materials that are comfortable for everyday use without looking overly elaborate." />
+        <FaqItem question="Is the fit oversized or regular?" answer="Each product has a different fit (regular, relaxed, or tailored). Detailed information is available in the product description." />
+        <FaqItem question="What is the brand's design philosophy?" answer="We believe that style doesn't have to be over-the-top. Our designs focus on striking a balance between aesthetics, functionality, and comfort to boost your confidence every day." />
+        <FaqItem question="What materials are used?" answer="We believe that style doesn't have to be over-the-top. Our designs focus on striking a balance between aesthetics, functionality, and comfort to boost your confidence every day." />
+        <FaqItem question="How do I care for the product?" answer="We recommend washing in cold water, avoiding bleach, and air-drying to preserve the quality of the fabric and its color." />
+      </div>
+    </div>
+  </section>
+
+</Layout>
